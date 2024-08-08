@@ -53,14 +53,21 @@ The app includes the following features:
 - **Update a Product**: Users can update any information or status of a product.
 - **Delete a Product**: Users can delete a product from the list.
 
-![Image from the app](screenshots/Screenshot (64).png)  
-![Image from the app](screenshots/Screenshot (65).png)  
-![Image from the app](screenshots/Screenshot (66).png)  
-![Image from the app](screenshots/Screenshot (67).png)  
-![Image from the app](screenshots/Screenshot (68).png)  
-![Image from the app](screenshots/Screenshot (69).png)  
-![Image from the app](screenshots/Screenshot (70).png)  
-![Image from the app](screenshots/Screenshot (71).png)  
-![Image from the app](screenshots/Screenshot (72).png)  
-![Image from the app](screenshots/Screenshot (73).png)  
+### Home Page  
+![Image from the app](screenshots/Screenshot%20(64).png)  
+### Adding Products   
+![Image%20from%20the app](screenshots/Screenshot%20(65).png)   
+![Image from the app](screenshots/Screenshot%20(66).png)  
+![Image from the app](screenshots/Screenshot%20(67).png) 
+### Added Product displayed on the Home page   
+![Image from the app](screenshots/Screenshot%20(68).png)  
+### Details page
+![Image from the app](screenshots/Screenshot%20(69).png)
+### First Product's price and size updated
+![Image from the app](screenshots/Screenshot%20(70).png)  
+### Search Page
+![Image from the app](screenshots/Screenshot%20(71).png)  
+![Image from the app](screenshots/Screenshot%20(72).png) 
+### First product deleted 
+![Image from the app](screenshots/Screenshot%20(73).png)  
 

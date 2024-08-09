@@ -1,4 +1,4 @@
-# Task 9: Entities, Use Cases, and Repositories  
+# Task 10: Data Overview Layer
 
 This ecommerce mobile app was made using flutter with the principles of clean architecture.
 
@@ -37,13 +37,13 @@ To get started with the app, follow these steps:
 
 ## Architechture
 
-- This project is designed following the principles of Clean Architecture, which divides the app into distinct layers to maintain separation of concerns, improve testability, and support scalability. The layers are as follows: - 
+- This project is designed following the principles of Clean Architecture, which divides the app into distinct layers to maintain separation of concerns, improve testability, and support scalability. The folder structure in the `lib` directory is organized as follows:
 
-- Entities: Represents the core business logic and the most fundamental part of the application. In this project, the Product entity is central, encapsulating properties like id, name, description, price, and imageUrl. - 
 
-- Use Cases: Contains the application-specific business rules. These use cases orchestrate the interaction between the entities and the repository. For example, use cases like InsertProduct, UpdateProduct, DeleteProduct, and GetProduct are responsible for handling CRUD operations. - 
-
-- Repositories: Acts as a mediator between the domain layer and the data sources. The ProductRepository is implemented to manage data operations, ensuring that the use cases interact seamlessly with the data layer, whether it's a local database, remote server, or any other data source. -    
+- **`core`**: Contains shared core components, entities, and error handling logic.
+- **`features`**: Includes feature-specific modules.
+  - **`features/product`**: This is the main module for the eCommerce feature.
+- **`test`**: Contains all the unit and widget tests.
 
 ## Packages Used
 
@@ -68,8 +68,9 @@ The eCommerce Mobile App includes the following key features:
 - **Test-Driven Development (TDD)**: The development of this project followed TDD practices, where test cases were written before the actual implementation to ensure robust and reliable code.  
 
 ## Testing
-- Unit tests for core domain logic and repositories -
-- Unit tests for models and repositories in the data layer. -   
+- **Unit Tests**: Tests for core domain logic and repositories.
+- **Model Tests**: Tests for models in the data layer, including validation of JSON serialization and deserialization.
+   
 Run all Tests:   
 ```
 flutter test

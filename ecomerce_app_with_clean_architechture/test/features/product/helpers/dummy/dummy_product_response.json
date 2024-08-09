@@ -1,0 +1,7 @@
+{
+    "id": 1,
+    "name": "shoe",
+    "description": "a good shoe",
+    "price": 700,
+    "imagePath": "imagePath"
+}

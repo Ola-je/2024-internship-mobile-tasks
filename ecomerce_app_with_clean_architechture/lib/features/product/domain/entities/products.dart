@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../data/models/product_model.dart';
+
 class Products extends Equatable{
   final int id;
   final String name;
@@ -22,4 +24,13 @@ class Products extends Equatable{
   List<Object?> get props => [id,];
 
   Object? toJson() {}
+  ProductModel toModel() {
+    return ProductModel(
+      id: id,
+      name: name,
+      description: description,
+      price: price,
+      imagePath: imagePath,
+    );
+  }
 }

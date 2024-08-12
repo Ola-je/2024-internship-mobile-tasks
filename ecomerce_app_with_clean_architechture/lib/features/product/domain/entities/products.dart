@@ -20,4 +20,6 @@ class Products extends Equatable{
   @override
   // TODO: implement props
   List<Object?> get props => [id,];
+
+  Object? toJson() {}
 }

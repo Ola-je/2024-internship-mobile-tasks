@@ -228,8 +228,7 @@ group('DeleteProduct', () {
       final result = await remoteDataSource.GetProduct(product);
 
       expect(result, isA<List<ProductModel>>());
-      expect(result.length, equals(1));
-      expect(result.first, equals(product));
+      expect(result, equals(product));
       verify(mockClient.get(Uri.parse('$baseUrl/products/${product.id}'))).called(1);
     });
 

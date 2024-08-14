@@ -88,4 +88,15 @@ class ProductRepositoryImplementation implements ProductRepository {
       return Left(Failure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, List<Products>>> GetAllProduct() async{
+    try{
+      final products = await remoteDataSources.GetAllProduct();
+      return Right(products);
+    }
+    catch(e){
+      return Left(Failure(e.toString()));
+    }
+  }
 }

@@ -109,11 +109,26 @@ class MockRemoteDataSources extends _i1.Mock implements _i4.RemoteDataSources {
       ) as _i5.Future<_i2.ProductModel>);
 
   @override
-  _i5.Future<List<_i2.ProductModel>> GetProduct(_i2.ProductModel? product) =>
+  _i5.Future<_i2.ProductModel> GetProduct(_i2.ProductModel? product) =>
       (super.noSuchMethod(
         Invocation.method(
           #GetProduct,
           [product],
+        ),
+        returnValue: _i5.Future<_i2.ProductModel>.value(_FakeProductModel_0(
+          this,
+          Invocation.method(
+            #GetProduct,
+            [product],
+          ),
+        )),
+      ) as _i5.Future<_i2.ProductModel>);
+
+  @override
+  _i5.Future<List<_i2.ProductModel>> GetAllProduct() => (super.noSuchMethod(
+        Invocation.method(
+          #GetAllProduct,
+          [],
         ),
         returnValue:
             _i5.Future<List<_i2.ProductModel>>.value(<_i2.ProductModel>[]),

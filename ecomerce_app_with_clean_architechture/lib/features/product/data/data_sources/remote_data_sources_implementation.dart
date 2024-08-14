@@ -47,14 +47,14 @@ class RemoteDataSourcesImplementation implements RemoteDataSources{
 
 
   @override
-  Future<List<ProductModel>> GetProduct(ProductModel product) async {
+  Future<ProductModel> GetProduct(ProductModel product) async {
     final uri = Uri.parse('$baseUrl/products/${product.id}');
 
     final response = await client.get(uri);
 
     if (response.statusCode == 200) {
-      final List<dynamic> responseBody = jsonDecode(response.body);
-      return responseBody.map((json) => ProductModel.fromJson(json)).toList();
+      final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      return ProductModel.fromJson(responseBody);
     } else {
       throw Exception('Failed to fetch products: ${response.reasonPhrase}');
     }
@@ -96,5 +96,20 @@ class RemoteDataSourcesImplementation implements RemoteDataSources{
     }
   }
 
+
+  @override
+  Future<List<ProductModel>> GetAllProduct() async{
+    final uri = Uri.parse('$baseUrl/products');
+
+    final response = await client.get(uri);
+
+    if (response.statusCode == 200){
+      final List<dynamic> responseBody = jsonDecode(response.body);
+      return responseBody.map((json) => ProductModel.fromJson(json)).toList();
+    }
+    else{
+      throw Exception('Failed to fetch products: ${response.reasonPhrase}');
+    }
+  }
   
 }

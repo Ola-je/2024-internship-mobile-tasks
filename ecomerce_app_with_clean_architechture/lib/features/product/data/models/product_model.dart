@@ -2,10 +2,10 @@ import '../../domain/entities/products.dart';
 
 class ProductModel extends Products{
   const ProductModel({
-    required int id,
+    required String id,
     required String name,
     required String  description,
-    required int price,
+    required double price,
     required String imagePath,
   }) : super(
     id: id,
@@ -19,8 +19,8 @@ class ProductModel extends Products{
     id: json['id'],
     name: json['name'],
     description: json['description'],
-    price: json['price'],
-    imagePath: json['imagePath'],
+    price: (json['price'] as num?)?.toDouble() ?? 49.0,  
+    imagePath: json['imageUrl'],
   );
 
   Map<String, dynamic> toJson() => {

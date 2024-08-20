@@ -36,6 +36,7 @@ dependencies:
   build_runner: ^2.4.11
   internet_connection_checker: ^1.0.0
   flutter_bloc: ^8.1.0  
+  bloc: ^8.1.0
   get_it: ^7.2.0
   # http: ^0.15.0
   # shared_preferences: ^2.015
@@ -50,6 +51,8 @@ dependencies:
   mocktail: ^1.0.4
   shared_preferences: ^2.3.1
   connectivity_plus: ^6.0.5
+  uuid: ^4.4.2
+  http_parser: ^4.0.2
 
 dev_dependencies:
   flutter_test:

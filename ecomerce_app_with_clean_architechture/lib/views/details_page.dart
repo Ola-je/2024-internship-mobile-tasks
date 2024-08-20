@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../models/product.dart';
-import '../models/product_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../features/product/domain/entities/products.dart';
+import '../features/product/presentation/bloc/product_bloc.dart';
+import 'home_page.dart';
 
 class DetailsPage extends StatefulWidget {
-  final Product product;
+  final Products product;
   final int productIndex;
 
   const DetailsPage({
@@ -20,8 +21,8 @@ class DetailsPage extends StatefulWidget {
 class _DetailsPageState extends State<DetailsPage> {
   late TextEditingController _nameController;
   late TextEditingController _priceController;
-  late TextEditingController _ratingController;
-  late TextEditingController _categoryController;
+  // late TextEditingController _ratingController;
+  // late TextEditingController _categoryController;
   late TextEditingController _descriptionController;
 
   int? _selectedSize;
@@ -31,18 +32,18 @@ class _DetailsPageState extends State<DetailsPage> {
     super.initState();
     _nameController = TextEditingController(text: widget.product.name);
     _priceController = TextEditingController(text: widget.product.price.toString());
-    _ratingController = TextEditingController(text: widget.product.rating.toString());
-    _categoryController = TextEditingController(text: widget.product.category);
+    // _ratingController = TextEditingController(text: widget.product.rating.toString());
+    // _categoryController = TextEditingController(text: widget.product.category);
     _descriptionController = TextEditingController(text: widget.product.description);
-    _selectedSize = widget.product.size;
+    // _selectedSize = widget.product.size;
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _priceController.dispose();
-    _ratingController.dispose();
-    _categoryController.dispose();
+    // _ratingController.dispose();
+    // _categoryController.dispose();
     _descriptionController.dispose();
     super.dispose();
   }
@@ -61,15 +62,14 @@ class _DetailsPageState extends State<DetailsPage> {
               child: Stack(
                 children: [
                   Positioned.fill(
-                    child: Image.asset(
-                      'Image/shoes.png',
+                    child: Image.network(
+                      widget.product.imagePath,
                       fit: BoxFit.cover,
                     ),
                   ),
                   Align(
                     alignment: Alignment.topLeft,
-                    child: IconButton(icon: Icon(Icons.arrow_back, color: Color(0xFF3F51F3)
-,),
+                    child: IconButton(icon: Icon(Icons.arrow_back, color: Color(0xFF3F51F3)),
                       onPressed: ()=> Navigator.of(context).pop(),),
                   )
                 ],
@@ -83,16 +83,13 @@ class _DetailsPageState extends State<DetailsPage> {
                   Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          controller: _categoryController,
+                        child: Text('Shoe',
+                          
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                             fontFamily: 'Poppins',
                             color: Color.fromARGB(255, 182, 181, 181),
-                          ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
                           ),
                         ),
                       ),
@@ -105,17 +102,13 @@ class _DetailsPageState extends State<DetailsPage> {
                       Text('('),
                       SizedBox(
                         width: 25,
-                        child: TextField(
-                          controller: _ratingController,
-                          keyboardType: TextInputType.number,
+                        child: Text(
+                          '4.0',
                           style: TextStyle(
                             fontSize: 16,
                             fontFamily: 'Sora',
                             fontWeight: FontWeight.w400,
                             color: Color.fromARGB(255, 182, 181, 181),
-                          ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -214,59 +207,67 @@ class _DetailsPageState extends State<DetailsPage> {
                 minLines: 3,
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Provider.of<ProductProvider>(context, listen: false)
-                          .deleteProduct(widget.productIndex);
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('DELETE'),
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.red,
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(color: Colors.red),
+            BlocConsumer<ProductBloc, ProductState>(
+              listener: (context, state) {
+                if (state is ErrorState) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+                } 
+                else if (state is LoadedSingleProductState) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Product updated successfully')));
+                  Navigator.of(context).pop();
+                }
+              },
+              builder: (context, state) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          BlocProvider.of<ProductBloc>(context).add(DeleteProductEvent((widget.product.id)));
+                          Navigator.of(context).push(MaterialPageRoute(builder:(context)=>HomePage()));
+                        },
+                        child: const Text('DELETE'),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.red,
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(color: Colors.red),
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                        ),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      final updatedProduct = Product(
-                        name: _nameController.text,
-                        price: double.tryParse(_priceController.text) ?? widget.product.price,
-                        rating: double.tryParse(_ratingController.text) ?? widget.product.rating,
-                        category: _categoryController.text,
-                        size: _selectedSize ?? widget.product.size,
-                        description: _descriptionController.text,
-                        imageUrl: widget.product.imageUrl,
-                      );
-
-                      Provider.of<ProductProvider>(context, listen: false)
-                          .updateProduct(widget.productIndex, updatedProduct);
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('UPDATE'),
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color(0xFF3F51F3),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final updatedProduct = Products(
+                            id: widget.product.id,
+                            name: _nameController.text,
+                            description: _descriptionController.text,
+                            price: double.parse(_priceController.text),
+                            imagePath: widget.product.imagePath,
+                          );
+                          BlocProvider.of<ProductBloc>(context).add(UpdateProductEvent(updatedProduct));
+                          Navigator.of(context).push(MaterialPageRoute(builder:(context)=>HomePage()));
+                        },
+                        child: const Text('UPDATE'),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Color(0xFF3F51F3),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                        ),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                     ),
-                  ),
-                ),
-              ],
+                  ],
+                );
+              },
             ),
           ],
         ),

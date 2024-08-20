@@ -3,10 +3,10 @@ import 'package:equatable/equatable.dart';
 import '../../data/models/product_model.dart';
 
 class Products extends Equatable{
-  final int id;
+  final String id;
   final String name;
   final String description;
-  final int price;
+  final double price;
   final String imagePath;
 
   const Products({
@@ -21,9 +21,18 @@ class Products extends Equatable{
   
   @override
   // TODO: implement props
-  List<Object?> get props => [id,];
+  List<Object?> get props => [id, name, description, price, imagePath];
 
-  Object? toJson() {}
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'price': price,
+      'imagePath': imagePath,
+    };
+  }
+
   ProductModel toModel() {
     return ProductModel(
       id: id,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../models/product.dart';
-import '../views/details_page.dart';
+import 'package:task_6/views/details_page.dart';
+import '../features/product/domain/entities/products.dart';
 
 class Cards extends StatelessWidget {
-  final Product product;
+  final Products product;
   final int index;
 
   const Cards({Key? key, required this.product, required this.index}) : super(key: key);
@@ -19,7 +19,7 @@ class Cards extends StatelessWidget {
           children: <Widget>[
             AspectRatio(
               aspectRatio: 18/12,
-              child: Image.asset(product.imageUrl),
+              child: Image.network(product.imagePath),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
@@ -51,7 +51,7 @@ class Cards extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        product.category,
+                        'Shoe',
                         style: const TextStyle(
                           fontSize: 12,
                           fontFamily: 'Poppins',
@@ -65,7 +65,7 @@ class Cards extends StatelessWidget {
                         color: Color.fromARGB(255, 248, 224, 11),
                       ),
                       Text(
-                        '${product.rating}',
+                        '4.0',
                         style: const TextStyle(
                           fontSize: 12,
                           fontFamily: 'Sora',

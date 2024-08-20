@@ -13,6 +13,6 @@ class DeleteProduct implements UseCase<Unit, DeleteProductParam>{
   }
 }
 class DeleteProductParam{
-  final int id;
+  final String id;
   const DeleteProductParam(this.id);
 }

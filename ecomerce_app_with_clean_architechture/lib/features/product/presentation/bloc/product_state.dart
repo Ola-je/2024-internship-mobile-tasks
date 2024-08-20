@@ -9,21 +9,23 @@ sealed class ProductState extends Equatable {
 
 final class InitialState extends ProductState {}
 
-final class LoadingState extends ProductState {}
+final class LoadingState extends ProductState {
+  
+}
 
 final class LoadedAllProductState extends ProductState {
-  final List<Product> products;
+  final List<Products> products;
 
-  LoadedAllProductState(this.products);
+  LoadedAllProductState({required this.products});
 
   @override
   List<Object> get props => [products];
-}
+}   
 
 final class LoadedSingleProductState extends ProductState {
-  final Product product;
+  final Products product;
 
-  LoadedSingleProductState(this.product);
+  LoadedSingleProductState({required this.product});
 
   @override
   List<Object> get props => [product];

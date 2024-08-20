@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:http_parser/http_parser.dart';
+
 import '../../domain/usecase/delete_product.dart';
 import '../models/product_model.dart';
 import 'remote_data_sources.dart';
@@ -17,25 +19,26 @@ class RemoteDataSourcesImplementation implements RemoteDataSources{
     final uri = Uri.parse('$baseUrl/products');
     var request = http.MultipartRequest('POST', uri);
 
-    request.fields['id'] = product.id.toString();
     request.fields['name'] = product.name;
     request.fields['description'] = product.description;
     request.fields['price'] = product.price.toString();
     
     var imageFile = File(product.imagePath);
-    request.files.add(await http.MultipartFile.fromPath('imagePath', imageFile.path));
-
+    // print("kk");
+    // print(product.imagePath);
+    request.files.add(await http.MultipartFile.fromPath('image', imageFile.path,contentType: MediaType('image','png')));
+    // print(request.fields);
 
     final streamedresponse = await client.send(request);
-    // print(streamedresponse);
     final response = await http.Response.fromStream(streamedresponse);
 
-
     if (response.statusCode == 201){
-      final responseBody = jsonDecode(response.body);
+      final responseBody = jsonDecode(response.body)['data'];
       return ProductModel.fromJson(responseBody);
     }
     else{
+      // print(response.body);
+
       throw Exception('Failed to create product');
     }
 
@@ -70,15 +73,16 @@ class RemoteDataSourcesImplementation implements RemoteDataSources{
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
+        'id': product.id,
         'name': product.name,
         'description': product.description,
         'price': product.price,
         'imagePath': product.imagePath,
       }),
     );
-
+    // print(response.body);
     if (response.statusCode == 200) {
-      final responseBody = jsonDecode(response.body);
+      final responseBody = jsonDecode(response.body)['data'];
       return ProductModel.fromJson(responseBody);
     } else {
       throw Exception('Failed to update product: ${response.reasonPhrase}');
@@ -86,7 +90,7 @@ class RemoteDataSourcesImplementation implements RemoteDataSources{
   }
   
   @override
-  Future<void> DeleteProduct(int id) async {
+  Future<void> DeleteProduct(String id) async {
     final uri = Uri.parse('$baseUrl/products/$id');
 
     final response = await client.delete(uri);
@@ -99,16 +103,23 @@ class RemoteDataSourcesImplementation implements RemoteDataSources{
 
   @override
   Future<List<ProductModel>> GetAllProduct() async{
-    final uri = Uri.parse('$baseUrl/products');
+    try {
+      final uri = Uri.parse('$baseUrl/products');
 
     final response = await client.get(uri);
 
     if (response.statusCode == 200){
-      final List<dynamic> responseBody = jsonDecode(response.body);
-      return responseBody.map((json) => ProductModel.fromJson(json)).toList();
+      final responseBody = jsonDecode(response.body)["data"];
+      List<ProductModel> products = [];
+      for (var i = 0; i < responseBody.length; i++){
+        products.add(ProductModel.fromJson(responseBody[i]));
+      }
+      return products;
     }
     else{
       throw Exception('Failed to fetch products: ${response.reasonPhrase}');
+    }} catch(e){
+      throw Exception(e.toString());
     }
   }
   

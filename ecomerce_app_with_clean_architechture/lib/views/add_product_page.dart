@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:task_6/models/product_provider.dart';
 import 'dart:io';
-import '../models/product.dart';
-import 'package:provider/provider.dart';
+import '../features/product/domain/entities/products.dart';
+import '../features/product/presentation/bloc/product_bloc.dart';
+import 'package:uuid/uuid.dart';
+
+import 'home_page.dart';
 
 class AddProductPage extends StatefulWidget {
   const AddProductPage({super.key});
@@ -13,6 +16,7 @@ class AddProductPage extends StatefulWidget {
 }
 
 class _AddProductPageState extends State<AddProductPage> {
+  final Uuid uuid = Uuid();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
@@ -61,40 +65,50 @@ class _AddProductPageState extends State<AddProductPage> {
   }
 
   void _addProduct() {
+    final String id = uuid.v4();
     final String name = _nameController.text;
     final String category = _categoryController.text;
-    final double price = double.tryParse(_priceController.text) ?? 0.0;
+    final double price = double.parse(_priceController.text);
     final String description = _descriptionController.text;
     final double rating = 4.0;
     final int size = 41;
+    final String imagePath =_selectedImage!.path;
 
     if (name.isNotEmpty &&
         category.isNotEmpty &&
         description.isNotEmpty &&
         _selectedImage != null) {
-      Product newProduct = Product(
-        name: name,
-        price: price,
-        rating: rating,
-        category: category,
-        size: size,
-        description: description,
-        imageUrl: _selectedImage!.path,
-      );
+    //   Products newProduct = Products(
+    //     id: id,
+    //     name: name,
+    //     price: price,
+    //     // rating: rating,
+    //     // category: category,
+    //     // size: size,
+    //     description: description,
+    //     imagePath: _selectedImage!.path,
+    //   );
 
-      final productList = Provider.of<ProductProvider>(context, listen: false);
-      productList.addProduct(newProduct);
-
+      // final productList = Provider.of<ProductProvider>(context, listen: false);
+      // productList.addProduct(newProduct);
+      BlocProvider.of<ProductBloc>(context).add(CreateProductEvent(id, price, name, description, imagePath));
+      Navigator.of(context).push(MaterialPageRoute(builder:(context)=>HomePage()));
+  
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Product added successfully')),
       );
 
-      Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please fill all fields and select an image')),
       );
     }
+    
+    //   @override
+    //   Widget build(BuildContext context) {
+    // // TODO: implement build
+    // throw UnimplementedError();
+    //   }
   }
 
   @override

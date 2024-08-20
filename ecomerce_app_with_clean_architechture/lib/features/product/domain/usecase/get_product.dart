@@ -8,7 +8,7 @@ import '../repositories/product_repository.dart';
 class GetProduct implements UseCase<Products, GetProductParam>{
   final ProductRepository repository;
   GetProduct(this.repository);
-
+ @override
   Future<Either<Failure, Products>> call(GetProductParam param) async{
     return await repository.GetProduct(param.product);
   }

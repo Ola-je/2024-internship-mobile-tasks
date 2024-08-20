@@ -41,7 +41,7 @@ class ProductRepositoryImplementation implements ProductRepository {
 
 
   @override
-  Future<Either<Failure, Unit>> DeleteProduct(int id) async {
+  Future<Either<Failure, Unit>> DeleteProduct(String id) async {
     try {
       await remoteDataSources.DeleteProduct(id);
       return const Right(unit);

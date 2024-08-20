@@ -10,37 +10,35 @@ sealed class ProductEvent extends Equatable {
 class LoadAllProductEvent extends ProductEvent{
   const LoadAllProductEvent();
   
-  @override
-  List<Object> get props => [];
+  // @override
+  // List<Object> get props => [];
 }
+
 class GetSingleProductEvent extends ProductEvent{
-  final int id;
-  const GetSingleProductEvent(this.id);
+  final Products product;
+  const GetSingleProductEvent(this.product);
 
   @override
-  List<Object> get props => [id];
+  List<Object> get props => [product];
 }
 class UpdateProductEvent extends ProductEvent{
-  final int id;
-  final int price;
-  final String name;
-  final String description;
-
-  const UpdateProductEvent(this.id, this.price, this.name, this.description);
-
+  final Products product;
+  const UpdateProductEvent(this.product);
   @override
-  List<Object> get props => [id, price, name, description];
+  List<Object> get props => [product];
 }
+
 class DeleteProductEvent extends ProductEvent{
-  final int id;
+  final String id;
   const DeleteProductEvent(this.id);
 
   @override
   List<Object> get props => [id];
 }
+
 class CreateProductEvent extends ProductEvent{
-  final int id;
-  final int price;
+  final String id;
+  final double price;
   final String name;
   final String description;
   final String imagePath;

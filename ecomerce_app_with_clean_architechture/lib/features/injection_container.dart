@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -22,24 +24,27 @@ import 'product/presentation/bloc/product_bloc.dart';
 final locator = GetIt.instance;
 Future<void> setUp() async{
 
-  locator.registerLazySingleton(()=>http.Client());
+  locator.registerLazySingleton<http.Client>(()=>http.Client());
   locator.registerLazySingleton<NetworkInfo>(()=>NetworkInfoImplementation(locator()));
-  locator.registerLazySingleton(()=>InputConverter());
-  locator.registerLazySingleton(()=>InternetConnectionChecker());
+  locator.registerLazySingleton<InputConverter>(()=>InputConverter());
+  locator.registerLazySingleton<InternetConnectionChecker>(()=>InternetConnectionChecker());
 
   final sharedPreferences = await SharedPreferences.getInstance();
   locator.registerSingleton<SharedPreferences>(sharedPreferences);
 
-  locator.registerLazySingleton<RemoteDataSources>(()=> RemoteDataSourcesImplementation(client: locator(), baseUrl: locator()));
+  locator.registerLazySingleton<RemoteDataSources>(()=> RemoteDataSourcesImplementation(client: locator(), baseUrl: 'https://g5-flutter-learning-path-be.onrender.com/api/v1'));
   locator.registerLazySingleton<LocalDataSources>(() => LocalDataSourcesImplementation());
 
-  locator.registerLazySingleton<ProductRepository>(()=> ProductRepositoryImplementation(remoteDataSources: locator(), localDataSources: locator(), networkInfo: locator()));
+  locator.registerLazySingleton<ProductRepository>(()=> ProductRepositoryImplementation(
+    remoteDataSources: locator(), 
+    localDataSources: locator(), 
+    networkInfo: locator()));
 
-  locator.registerLazySingleton(() => GetAllProduct(locator()));
-  locator.registerLazySingleton(() => GetProduct(locator()));
-  locator.registerLazySingleton(() => AddProduct(locator()));
-  locator.registerLazySingleton(() => UpdateProduct(locator()));
-  locator.registerLazySingleton(() => DeleteProduct(locator()));
+  locator.registerLazySingleton<GetAllProduct>(() => GetAllProduct(locator()));
+  locator.registerLazySingleton<GetProduct>(() => GetProduct(locator()));
+  locator.registerLazySingleton<AddProduct>(() => AddProduct(locator()));
+  locator.registerLazySingleton<UpdateProduct>(() => UpdateProduct(locator()));
+  locator.registerLazySingleton<DeleteProduct>(() => DeleteProduct(locator()));
 
   locator.registerFactory(() => ProductBloc(
     addProduct: locator(), 

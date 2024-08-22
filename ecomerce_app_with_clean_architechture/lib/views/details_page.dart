@@ -88,7 +88,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
-                            fontFamily: 'Poppins',
+                            // fontFamily: 'Poppins',
                             color: Color.fromARGB(255, 182, 181, 181),
                           ),
                         ),
@@ -106,7 +106,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           '4.0',
                           style: TextStyle(
                             fontSize: 16,
-                            fontFamily: 'Sora',
+                            // fontFamily: 'Sora',
                             fontWeight: FontWeight.w400,
                             color: Color.fromARGB(255, 182, 181, 181),
                           ),
@@ -125,7 +125,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 24,
-                            fontFamily: 'Poppins'
+                            // fontFamily: 'Poppins'
                           ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -142,7 +142,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
-                            fontFamily: 'Poppins',
+                            // fontFamily: 'Poppins',
                           ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -162,7 +162,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 20,
-                  fontFamily: 'Poppins',
+                  // fontFamily: 'Poppins',
                 ),
               ),
             ),
@@ -197,7 +197,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 controller: _descriptionController,
                 style: const TextStyle(
                   fontSize: 14,
-                  fontFamily: 'Poppins',
+                  // fontFamily: 'Poppins',
                   fontWeight: FontWeight.w500,
                 ),
                 decoration: InputDecoration(

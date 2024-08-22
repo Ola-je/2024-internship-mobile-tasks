@@ -4,79 +4,119 @@ import '../../domain/entities/auth.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../domain/repositories/auth_repository.dart';
-import '../data_sources/local_data_sources.dart';
-import '../data_sources/remote_data_sources.dart';
+import '../data_sources/local_data.dart';
+import '../data_sources/remote_data.dart';
 
 class AuthRepositoryImplementation implements AuthRepository{
-  final RemoteDataSources remoteDataSources;
-  final LocalDataSources localDataSources;
+  final RemoteData remoteData;
+  final LocalData localData;
   final NetworkInfo networkInfo;
 
-  AuthRepositoryImplementation({required this.remoteDataSources, required this.localDataSources, required this.networkInfo});
+  AuthRepositoryImplementation({required this.remoteData, required this.localData, required this.networkInfo});
 
-  @override
-Future<Either<Failure, Auth>> signIn(String email, String password) async {
-  try {
-    final cachedUser = await localDataSources.getCachedUser(email, password);
-    return await cachedUser.fold(
+@override
+Future<Either<Failure, bool>> signIn(Auth user) async {
+
+  if (await networkInfo.isConnected) {
+    final remoteUser = await remoteData.signIn(user);
+    bool value = false;
+
+    remoteUser.fold(
       (failure) {
-        return Left(Failure('error retrieving cached user ${failure.toString()}'));
+        return Left(Failure('Failed to get token: ${failure.toString()}'));
       },
-      (data) async {
-        if (data != null) {
-          return Right(data);
-        } else {
-          if (await networkInfo.isConnected) {
-            final remoteUser = await remoteDataSources.signIn(email, password);
-            return await remoteUser.fold(
-              (failure) {
-                return Left(Failure('Failed to sign in remotely: ${failure.toString()}'));
-              },
-              (userData) async {
-                await localDataSources.cacheUser(userData);
-                return Right(userData); // Changed from 'data' to 'userData'
-              },
-            );
-          } else {
-            return Left(Failure('Connect to a network and try again')); // Added 'Left' to return a Failure
-          }
+      (token) {
+        if (token.isEmpty){
+          value = false;
         }
-      },
-    );
-  } catch (e) {
-    return Left(Failure('Failed to sign in ${e.toString()}'));
+        else{
+          localData.saveToken(token);
+          value=true;
+        }
+      });
+      return Right(value);
+  }
+  else{
+    return Left(Failure('No internet connection'));
+  }
+
+}
+
+@override
+Future<Either<Failure, bool>> signUp(Auth user) async {
+  if (await networkInfo.isConnected) {
+    return remoteData.signUp(user);
+  }
+  else{
+    return Left(Failure('No internet connection'));
   }
 }
 
+
   @override
-  Future<Either<Failure, Auth>> signUp(Auth user) async{
-    try{
-      if (await networkInfo.isConnected){
-        final existingUser = await remoteDataSources.getUserByEmail(user.email);
-
-        return await existingUser.fold((failure) async {
-          final remoteUser = await remoteDataSources.signUp(user);
-
-          return await remoteUser.fold(
-            (failure){
-              return Left(Failure('failed to register user ${failure.toString()}'));
-        }, 
-          (userData) async {
-            await localDataSources.cacheUser(userData);
-            return Right(userData);
-          });
-      }
-      ,(userData){
-        return Left(Failure('User is already registered'));
-      },);
-      }
-      else{
-        return Left(Failure('No internet connection'));
-      }
-    }
-    catch (e){
-      return Left(Failure('failed to register: ${e.toString()}'));
+  Future<Either<Failure, String?>> getToken() async {
+    final token = await localData.getToken();
+    if (token != null) {
+      return Right(token);
+    } else {
+      return Left(Failure('No token found'));
     }
   }
+  
+  @override
+  Future<void> logout() async {
+    await localData.clearToken();
+  }
+
+
+
+  // @override
+  // Future<Either<Failure, String>> signUp(Auth user) async{
+  //   try{
+  //     if (await networkInfo.isConnected){
+  //       var tokenResult = await remoteData.signIn(user.email, user.password);
+  //       return await tokenResult.fold(
+  //         (failure) async{
+  //           return Left(Failure('User has not registered'));
+  //         },
+  //         (token) async{
+  //           var userData = await remoteData.getUser(token);
+  //           return await userData.fold(
+  //             (failure){
+  //               return Left(Failure('User has not register'));
+  //           }, 
+  //           (data) async{
+  //             await localData.cacheUser(data);
+  //             return Right(userData);
+  //           }) 
+
+  //         })
+          
+    //     final existingUser = await remoteData.getUser();
+
+    //     return await existingUser.fold((failure) async {
+    //       final remoteUser = await remoteData.signUp(user);
+
+    //       return await remoteUser.fold(
+    //         (failure){
+    //           return Left(Failure('failed to register user ${failure.toString()}'));
+    //     }, 
+    //       (userData) async {
+            // await localData.cacheUser(userData);
+            // return Right(userData);
+    //       });
+    //   }
+    //   ,(userData){
+    //     return Left(Failure('User is already registered'));
+    //   },);
+    //   }
+    //   else{
+  //   //     return Left(Failure('No internet connection'));
+  //     }
+  //     }
+  //   catch (e){
+  //     return Left(Failure('failed to register: ${e.toString()}'));
+  //   }
+  // }
 
 }

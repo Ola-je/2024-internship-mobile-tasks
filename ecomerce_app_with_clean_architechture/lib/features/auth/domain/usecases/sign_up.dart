@@ -4,18 +4,12 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/usecase.dart';
 import '../entities/auth.dart';
 import '../repositories/auth_repository.dart';
-class SignUp implements UseCase<Auth, SignUpParam>{
+class SignUp{
   final AuthRepository repository;
-    SignUp(this.repository);
+    SignUp({required this.repository});
 
   @override
-  Future<Either<Failure, Auth>> call(SignUpParam param) async{
-    return await repository.signUp(param.product);
+  Future<Either<Failure, bool>> call(Auth user) async{
+    return await repository.signUp(user);
   }
-}
-
-class SignUpParam {
-  final Auth product;
-
-  const SignUpParam(this.product);
 }

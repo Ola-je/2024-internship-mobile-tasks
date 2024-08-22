@@ -5,6 +5,8 @@ import '../entities/auth.dart';
 import '../usecases/sign_in.dart';
 
 abstract class AuthRepository{
-  Future<Either<Failure, Auth>> signIn(Auth auth);
-  Future<Either<Failure, Auth>> signUp(Auth auth);
+  Future<Either<Failure, bool>> signIn(Auth user);
+  Future<Either<Failure, bool>> signUp(Auth user);
+  Future<void> logout();
+  Future<Either<Failure, String?>> getToken();
 }

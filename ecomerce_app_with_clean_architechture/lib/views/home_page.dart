@@ -65,7 +65,7 @@ class HomePage extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w400,
-                                  fontFamily: 'Sora',
+                                  // fontFamily: 'Sora',
                                 ),
                               ),
                               TextSpan(
@@ -73,7 +73,7 @@ class HomePage extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,
-                                  fontFamily: 'Sora',
+                                  // fontFamily: 'Sora',
                                 ),
                               ),
                             ],
@@ -124,84 +124,90 @@ class HomePage extends StatelessWidget {
           
           body: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Available Products',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'Poppins',
+            child: RefreshIndicator(
+              onRefresh: () {
+                context.read<ProductBloc>().add(const LoadAllProductEvent());
+                return Future.delayed(const Duration(seconds: 2));
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Available Products',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            // fontFamily: 'Poppins',
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              width: 45,
-                              height: 45,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(
-                                  color: Color.fromARGB(255, 241, 239, 239),
-                                  width: 3,
+                        GestureDetector(
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: 45,
+                                height: 45,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15),
+                                  border: Border.all(
+                                    color: Color.fromARGB(255, 241, 239, 239),
+                                    width: 3,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const Icon(
-                              Icons.search,
-                              size: 30,
-                              color: Color.fromARGB(255, 231, 228, 228),
-                            ),
-                          ],
+                              const Icon(
+                                Icons.search,
+                                size: 30,
+                                color: Color.fromARGB(255, 231, 228, 228),
+                              ),
+                            ],
+                          ),
+                          onTap: () {
+                            // Navigator.of(context).push(
+                            //   MaterialPageRoute(
+                            //     builder: (context) => const SearchPage(),
+                            //   ),
+                            // );
+                          },
                         ),
-                        onTap: () {
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //     builder: (context) => const SearchPage(),
-                          //   ),
-                          // );
-                        },
-                      ),
-                    ],
-                  ),
-                  BlocBuilder<ProductBloc, ProductState>(
-                    builder: (context, state) {
-                      if (state is LoadingState) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (state is LoadedAllProductState) {
-                        return Column(
-                          children: List.generate(
-                            state.products.length,
-                            (index) => Cards(
-                              product: state.products[index],
-                              index: index,
+                      ],
+                    ),
+                    BlocBuilder<ProductBloc, ProductState>(
+                      builder: (context, state) {
+                        if (state is LoadingState) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (state is LoadedAllProductState) {
+                          return Column(
+                            children: List.generate(
+                              state.products.length,
+                              (index) => Cards(
+                                product: state.products[index],
+                                index: index,
+                              ),
                             ),
-                          ),
+                          );
+                        } else if (state is ErrorState) {
+                          return Center(
+                            child: Text(
+                              state.message,
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                          );
+                        }
+                        return const Center(
+                          child: Text('No products available.'),
                         );
-                      } else if (state is ErrorState) {
-                        return Center(
-                          child: Text(
-                            state.message,
-                            style: const TextStyle(color: Colors.red),
-                          ),
-                        );
-                      }
-                      return const Center(
-                        child: Text('No products available.'),
-                      );
-                    },
-                  ),
-                ],
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -222,7 +228,7 @@ class DateDisplay extends StatelessWidget {
       style: const TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
-        fontFamily: 'Syne',
+        // fontFamily: 'Syne',
       ),
     );
   }

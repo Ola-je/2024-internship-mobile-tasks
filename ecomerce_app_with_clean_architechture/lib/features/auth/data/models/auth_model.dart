@@ -4,7 +4,7 @@ import '../../domain/entities/auth.dart';
 class AuthModel extends Auth{
   const AuthModel({
     required String name,
-    required String  email,
+    required String email,
     required String password,
   }) : super(
     name: name,
@@ -18,11 +18,11 @@ class AuthModel extends Auth{
     password: json['password'],
   );
 
-  Map<String, dynamic> toJson() => {
-    'name': name,
-    'email': email,
-    'password': password,
-  };
+  // Map<String, dynamic> toJson() => {
+  //   'name': name,
+  //   'email': email,
+  //   'password': password,
+  // };
 
   Auth toEntity() {
     return Auth(
@@ -31,4 +31,5 @@ class AuthModel extends Auth{
       password: password,
     );
   }
+
 }

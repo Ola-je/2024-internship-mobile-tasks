@@ -7,6 +7,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/network/network_info_implementation.dart';
 import '../core/util/input_converter.dart';
+import 'auth/data/data_sources/local_data.dart';
+import 'auth/data/data_sources/local_data_implementation.dart';
+import 'auth/data/data_sources/remote_data.dart';
+import 'auth/data/data_sources/remote_data_implementation.dart';
+import 'auth/data/repositories/auth_repository_implementation.dart';
+import 'auth/domain/repositories/auth_repository.dart';
+import 'auth/domain/usecases/sign_in.dart';
+import 'auth/domain/usecases/sign_up.dart';
+import 'auth/presentation/bloc/auth_bloc.dart';
 import 'product/data/data_sources/local_data_sources.dart';
 import 'product/data/data_sources/local_data_sources_implementation.dart';
 import 'product/data/data_sources/remote_data_sources.dart';
@@ -54,4 +63,21 @@ Future<void> setUp() async{
     updateProduct: locator(), 
     inputConverter: locator()));
 
+
+  locator.registerLazySingleton<RemoteData>(()=> RemoteDataImplementation(client: locator()));
+  locator.registerLazySingleton<LocalData>(()=> LocalDataImplementation(sharedPreferences: locator()));
+
+  locator.registerLazySingleton<AuthRepository>(()=> AuthRepositoryImplementation(
+    remoteData: locator(), 
+    localData: locator(), 
+    networkInfo: locator()));
+
+  locator.registerLazySingleton<SignIn>(() => SignIn(repository: locator()));
+  locator.registerLazySingleton<SignUp>(() => SignUp(repository: locator()));
+
+  locator.registerFactory(()=> AuthBloc(
+    signUp: locator(), 
+    signIn: locator(),
+    
+    ));
 }

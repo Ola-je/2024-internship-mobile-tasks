@@ -21,7 +21,7 @@ void main() {
   group('LocalDataSourcesImplementation', () {
     test('should retrieve a product by ID', () async {
       final product = ProductModel(
-        id: 1,
+        id: '1',
         name: 'Test Product',
         description: 'A test product',
         price: 100,
@@ -41,7 +41,7 @@ void main() {
 
     test('should return an error when trying to get a product', () async {
       final product = ProductModel(
-        id: 1,
+        id: '1',
         name: 'Test Product',
         description: 'A test product',
         price: 100,

@@ -34,7 +34,7 @@ class Cards extends StatelessWidget {
                         style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 20,
-                          fontFamily: 'Poppins'
+                          // fontFamily: 'Poppins'
                         ),
                       ),
                       Text(
@@ -42,7 +42,7 @@ class Cards extends StatelessWidget {
                         style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 14,
-                          fontFamily: 'Poppins'
+                          // fontFamily: 'Poppins'
                         ),
                       ),
                     ],
@@ -54,7 +54,7 @@ class Cards extends StatelessWidget {
                         'Shoe',
                         style: const TextStyle(
                           fontSize: 12,
-                          fontFamily: 'Poppins',
+                          // fontFamily: 'Poppins',
                           fontWeight: FontWeight.w400,
                           color: Color.fromARGB(255, 182, 181, 181),
                         ),
@@ -68,7 +68,7 @@ class Cards extends StatelessWidget {
                         '4.0',
                         style: const TextStyle(
                           fontSize: 12,
-                          fontFamily: 'Sora',
+                          // fontFamily: 'Sora',
                           fontWeight: FontWeight.w400,
                           color: Color.fromARGB(255, 182, 181, 181),
                         ),

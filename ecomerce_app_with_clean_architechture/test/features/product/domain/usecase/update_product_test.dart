@@ -20,7 +20,7 @@ void main() {
   });
 
   final product = Products(
-    id: 1,
+    id: '1',
     name: 'shoe',
     description: 'a good shoe',
     price: 700,

@@ -5,7 +5,7 @@ import '../../domain/entities/auth.dart';
 import '../../domain/usecases/sign_in.dart';
 import '../../domain/usecases/sign_up.dart';
 
-abstract class RemoteDataSources{
-  Future<Either<Failure, Auth>> signIn(String email, String password);
-  Future<Either<Failure, Auth>> signUp(Auth user);
+abstract class RemoteData{
+  Future<Either<Failure, String>> signIn(Auth user);
+  Future<Either<Failure, bool>> signUp(Auth user);
 }

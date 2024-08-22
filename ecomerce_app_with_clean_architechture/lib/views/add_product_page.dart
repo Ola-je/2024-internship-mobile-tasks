@@ -126,7 +126,7 @@ class _AddProductPageState extends State<AddProductPage> {
       appBar: AppBar(
         title: Center(child: Text('Add Product', 
         style: TextStyle(
-          fontFamily: 'Poppins',
+          // fontFamily: 'Poppins',
           fontSize: 16,
           fontWeight: FontWeight.w500),)),
       ),
@@ -158,7 +158,7 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
               ),
               Positioned(bottom: 80, child: Text('Upload Image', style: TextStyle(
-                fontFamily: 'Poppins',
+                // fontFamily: 'Poppins',
                 fontSize: 14,
                 fontWeight: FontWeight.w500
               ),))
@@ -171,7 +171,8 @@ class _AddProductPageState extends State<AddProductPage> {
               controller: _nameController,
               decoration: const InputDecoration(
                 labelText: 'Name',
-                labelStyle: TextStyle(fontFamily: 'poppins',
+                labelStyle: TextStyle(
+                  // fontFamily: 'poppins',
                 fontSize: 14,
                 fontWeight: FontWeight.w500),
                 border: OutlineInputBorder(),
@@ -187,7 +188,8 @@ class _AddProductPageState extends State<AddProductPage> {
               controller: _categoryController,
               decoration: const InputDecoration(
                 labelText: 'Category',
-                labelStyle: TextStyle(fontFamily: 'poppins',
+                labelStyle: TextStyle(
+                  // fontFamily: 'poppins',
                 fontSize: 14,
                 fontWeight: FontWeight.w500),
                 border: OutlineInputBorder(),
@@ -204,7 +206,8 @@ class _AddProductPageState extends State<AddProductPage> {
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 labelText: 'Price',
-                labelStyle: TextStyle(fontFamily: 'poppins',
+                labelStyle: TextStyle(
+                  // fontFamily: 'poppins',
                 fontSize: 14,
                 fontWeight: FontWeight.w500),
                 border: OutlineInputBorder(),
@@ -223,7 +226,8 @@ class _AddProductPageState extends State<AddProductPage> {
               minLines: 5,
               decoration: const InputDecoration(
                 labelText: 'Description',
-                labelStyle: TextStyle(fontFamily: 'poppins',
+                labelStyle: TextStyle(
+                  // fontFamily: 'poppins',
                 fontSize: 14,
                 fontWeight: FontWeight.w500),
                 border: OutlineInputBorder(),
